@@ -9,8 +9,8 @@ BRANCH="${BRANCH:-main}"
 INSTALL_NAPCAT=1
 UV_BIN=""
 PYTHON_VERSION="${PYTHON_VERSION:-3.12}"
-PIP_INDEX_URL="${PIP_INDEX_URL:-https://pypi.tuna.tsinghua.edu.cn/simple}"
-PIP_FALLBACK_INDEX_URL="${PIP_FALLBACK_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}"
+PIP_INDEX_URL="${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}"
+PIP_FALLBACK_INDEX_URL="${PIP_FALLBACK_INDEX_URL:-https://pypi.org/simple}"
 
 usage() {
   cat <<'EOF'
@@ -159,10 +159,19 @@ install_python_requirements() {
   local dir="$1"
   cd "$dir"
   "$UV_BIN" pip install --python "$dir/venv/bin/python" -U pip
-  "$UV_BIN" pip install --python "$dir/venv/bin/python" --only-binary=:all: -r requirements.txt -i "$PIP_INDEX_URL" || \
-    "$UV_BIN" pip install --python "$dir/venv/bin/python" --only-binary=:all: -r requirements.txt -i "$PIP_FALLBACK_INDEX_URL" || \
-    "$UV_BIN" pip install --python "$dir/venv/bin/python" --only-binary=:all: -r requirements.txt || \
-    "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt
+  "$UV_BIN" pip install --python "$dir/venv/bin/python" \
+    --only-binary=:all: \
+    --no-binary=aiocqhttp \
+    --no-binary=python-ripgrep \
+    -r requirements.txt \
+    -i "$PIP_INDEX_URL" || \
+    "$UV_BIN" pip install --python "$dir/venv/bin/python" \
+      --only-binary=:all: \
+      --no-binary=aiocqhttp \
+      --no-binary=python-ripgrep \
+      -r requirements.txt \
+      -i "$PIP_FALLBACK_INDEX_URL" || \
+    CXXFLAGS="${CXXFLAGS:-} -std=c++11" "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt -i "$PIP_FALLBACK_INDEX_URL"
   chown -R qqbot:qqbot "$dir/venv"
 }
 
