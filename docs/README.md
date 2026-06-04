@@ -20,13 +20,11 @@
 
 ## 最短路径
 
-已经有服务器时，直接执行：
+国内服务器建议直接执行：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/main/install.sh | sudo bash -s -- --repo https://github.com/ShaoyanXia/qq-ai-customer-service.git
+git clone --depth=1 https://gitee.com/xiashaoyan/qq-ai-customer-service.git /tmp/qq-ai-customer-service && sudo bash /tmp/qq-ai-customer-service/install.sh --repo https://gitee.com/xiashaoyan/qq-ai-customer-service.git
 ```
-
-国内服务器可以把仓库放到 Gitee，把 raw 地址和 `--repo` 地址都换成 Gitee。
 
 安装完成后继续做三件事：
 

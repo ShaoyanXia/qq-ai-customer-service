@@ -42,13 +42,17 @@ flowchart LR
 
 ## 一行命令部署
 
-在服务器上执行下面这一行命令即可开始安装：
+国内服务器建议使用 Gitee 地址：
+
+```bash
+git clone --depth=1 https://gitee.com/xiashaoyan/qq-ai-customer-service.git /tmp/qq-ai-customer-service && sudo bash /tmp/qq-ai-customer-service/install.sh --repo https://gitee.com/xiashaoyan/qq-ai-customer-service.git
+```
+
+如果服务器访问 GitHub 稳定，也可以使用 GitHub：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/main/install.sh | sudo bash -s -- --repo https://github.com/ShaoyanXia/qq-ai-customer-service.git
 ```
-
-国内服务器如果访问 GitHub 不稳定，可以把仓库放到 Gitee，然后把上面的 raw 地址和 `--repo` 地址都换成 Gitee。
 
 安装脚本会完成：
 

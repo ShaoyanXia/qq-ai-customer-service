@@ -16,16 +16,16 @@
 
 ## 一行安装
 
-把本项目发布到 GitHub 后：
+国内服务器建议使用 Gitee：
+
+```bash
+git clone --depth=1 https://gitee.com/xiashaoyan/qq-ai-customer-service.git /tmp/qq-ai-customer-service && sudo bash /tmp/qq-ai-customer-service/install.sh --repo https://gitee.com/xiashaoyan/qq-ai-customer-service.git
+```
+
+如果服务器访问 GitHub 稳定，也可以使用 GitHub：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/main/install.sh | sudo bash -s -- --repo https://github.com/ShaoyanXia/qq-ai-customer-service.git
-```
-
-如果用 Gitee，把地址换成你的 Gitee raw 地址和仓库地址：
-
-```bash
-curl -fsSL https://gitee.com/<owner>/<repo>/raw/main/install.sh | sudo bash -s -- --repo https://gitee.com/<owner>/<repo>.git
 ```
 
 安装脚本会自动完成：

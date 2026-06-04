@@ -2,10 +2,10 @@
 
 本指南支持 Ubuntu、Debian、CentOS、RHEL、Alibaba Cloud Linux 等常见服务器系统。原则是：NapCatQQ 使用 Shell/Launcher 原生运行，AstrBot 使用源码和 uv 运行，二者交给 systemd 托管。
 
-如果你已经把本项目发布到 Git 仓库，优先使用根目录的 `install.sh`：
+国内服务器优先使用 Gitee：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/main/install.sh | sudo bash -s -- --repo https://github.com/ShaoyanXia/qq-ai-customer-service.git
+git clone --depth=1 https://gitee.com/xiashaoyan/qq-ai-customer-service.git /tmp/qq-ai-customer-service && sudo bash /tmp/qq-ai-customer-service/install.sh --repo https://gitee.com/xiashaoyan/qq-ai-customer-service.git
 ```
 
 下面是手动部署步骤，适合排障或二次定制。
