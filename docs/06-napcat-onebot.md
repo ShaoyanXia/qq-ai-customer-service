@@ -22,6 +22,15 @@ systemctl restart astrbot.service
 
 ## 2. 打开 AstrBot WebUI
 
+AstrBot Dashboard 默认端口是 `6185`。你可以二选一：
+
+| 方式 | 推荐程度 | 适合场景 |
+|---|---|---|
+| SSH 隧道 | 推荐 | 自己配置，最安全，不需要开放 `6185` |
+| 临时开放端口 | 谨慎使用 | 不会用 SSH 隧道，或需要短时间让别人协助配置 |
+
+### 方式 A：SSH 隧道打开 AstrBot
+
 在本地电脑开 SSH 隧道：
 
 ```bash
@@ -33,6 +42,35 @@ ssh -L 6185:127.0.0.1:6185 root@<服务器 IP>
 ```text
 http://127.0.0.1:6185
 ```
+
+安全组只需要开放 SSH 端口，一般是 `22`。
+
+### 方式 B：临时开放 AstrBot 端口
+
+如果你确实要直接访问：
+
+1. 云服务器安全组临时放行 TCP `6185`。
+2. 系统防火墙也放行 `6185`，如果你启用了 ufw：
+
+```bash
+ufw allow 6185/tcp
+```
+
+3. 浏览器访问：
+
+```text
+http://<服务器公网 IP>:6185
+```
+
+配置完成后立刻关闭：
+
+```bash
+ufw delete allow 6185/tcp
+```
+
+并在云服务器安全组里删除 `6185` 入站规则。
+
+不要长期公网暴露 AstrBot Dashboard。
 
 在 AstrBot WebUI 里：
 
@@ -48,6 +86,15 @@ http://127.0.0.1:6185
 如果有 token 选项，先留空。等跑通后再加 token。
 
 ## 3. 打开 NapCat WebUI
+
+NapCat WebUI 默认端口是 `6099`。同样有两种方式：
+
+| 方式 | 推荐程度 | 适合场景 |
+|---|---|---|
+| SSH 隧道 | 推荐 | 自己扫码和配置，最安全，不需要开放 `6099` |
+| 临时开放端口 | 谨慎使用 | 手机/电脑网络环境不方便隧道，或短时间让别人协助 |
+
+### 方式 A：SSH 隧道打开 NapCat
 
 在本地电脑开 SSH 隧道：
 
@@ -66,6 +113,41 @@ journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebU
 ```text
 http://127.0.0.1:6099/webui?token=<TOKEN>
 ```
+
+安全组只需要开放 SSH 端口，一般是 `22`。
+
+### 方式 B：临时开放 NapCat 端口
+
+如果你确实要直接访问：
+
+1. 云服务器安全组临时放行 TCP `6099`。
+2. 系统防火墙也放行 `6099`，如果你启用了 ufw：
+
+```bash
+ufw allow 6099/tcp
+```
+
+3. 查看 WebUI token：
+
+```bash
+journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebUi|6099|token"
+```
+
+4. 浏览器访问：
+
+```text
+http://<服务器公网 IP>:6099/webui?token=<TOKEN>
+```
+
+扫码和配置完成后立刻关闭：
+
+```bash
+ufw delete allow 6099/tcp
+```
+
+并在云服务器安全组里删除 `6099` 入站规则。
+
+不要长期公网暴露 NapCat WebUI。它涉及 QQ 登录和机器人网络配置。
 
 如果 NapCat 还没登录 QQ，先扫码登录。
 
@@ -146,3 +228,12 @@ journalctl -u napcat.service --since "10 minutes ago" --no-pager
 
 不需要。`6199` 只给服务器本机的 NapCat 连接 AstrBot，不要放到安全组公网入站。
 
+## 端口开放建议
+
+| 端口 | 用途 | SSH 隧道方案 | 临时公网方案 |
+|---|---|---|---|
+| `22` | SSH | 必须开放，最好只允许你的 IP | 必须开放，最好只允许你的 IP |
+| `6099` | NapCat WebUI | 不开放 | 临时开放，配置完关闭 |
+| `6185` | AstrBot Dashboard | 不开放 | 临时开放，配置完关闭 |
+| `6199` | OneBot v11 | 不开放 | 不开放 |
+| `18887` | Web Chat | 可不开放 | 如需给别人测试，可开放但必须带 token |

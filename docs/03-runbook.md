@@ -30,7 +30,7 @@ journalctl -u xigua-web-chat.service --since "30 minutes ago" --no-pager
 
 ## 打开 NapCat WebUI
 
-不要开放 `6099` 到公网。使用 SSH 隧道：
+推荐不要开放 `6099` 到公网。使用 SSH 隧道：
 
 ```bash
 ssh -L 6099:127.0.0.1:6099 root@<SERVER_IP>
@@ -47,6 +47,29 @@ journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebU
 ```text
 http://127.0.0.1:6099/webui?token=<TOKEN>
 ```
+
+如果确实需要临时公网访问：
+
+1. 云服务器安全组临时放行 TCP `6099`。
+2. 如果启用了 ufw：
+
+```bash
+ufw allow 6099/tcp
+```
+
+3. 浏览器打开：
+
+```text
+http://<SERVER_IP>:6099/webui?token=<TOKEN>
+```
+
+4. 配置完成后关闭：
+
+```bash
+ufw delete allow 6099/tcp
+```
+
+并删除云服务器安全组里的 `6099` 入站规则。
 
 如果浏览器打开时报 SSH 里的 `Connection refused`，说明 NapCat 没在服务器本机监听 `6099`：
 
@@ -79,6 +102,16 @@ journalctl -u napcat.service --since "5 minutes ago" --no-pager | grep -Ei "webs
 ```
 
 完整步骤见：[NapCat 连接 AstrBot](06-napcat-onebot.md)。
+
+## 端口开放策略
+
+| 端口 | 用途 | 建议 |
+|---|---|---|
+| `22` | SSH | 开放，最好限制你的 IP |
+| `6099` | NapCat WebUI | SSH 隧道；如公网访问，只临时开放 |
+| `6185` | AstrBot Dashboard | SSH 隧道；如公网访问，只临时开放 |
+| `6199` | OneBot v11 | 不开放公网 |
+| `18887` | Web Chat | 可选开放，必须设置 `ACCESS_TOKEN` |
 
 ## 检查知识库数量
 

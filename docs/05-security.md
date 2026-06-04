@@ -4,8 +4,8 @@
 
 | 端口 | 用途 | 建议 |
 |---|---|---|
-| 6099 | NapCat WebUI | 只绑定 `127.0.0.1`，用 SSH 隧道访问 |
-| 6185 | AstrBot Dashboard | 只绑定 `127.0.0.1` 或内网 |
+| 6099 | NapCat WebUI | 推荐 SSH 隧道；如公网访问，只临时开放并配置完关闭 |
+| 6185 | AstrBot Dashboard | 推荐 SSH 隧道；如公网访问，只临时开放并配置完关闭 |
 | 6199 | OneBot v11 反向 WebSocket | 本机或内网，配置 token |
 | 18887 | Web Chat | 可公网，但必须鉴权 |
 
@@ -46,4 +46,3 @@
 - 改 persona、provider、插件时，只重启 AstrBot。
 - 改 Web Chat 时，只重启 Web Chat。
 - 尽量不重启 NapCat。
-

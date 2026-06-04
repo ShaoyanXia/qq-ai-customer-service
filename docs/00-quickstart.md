@@ -51,7 +51,9 @@ NapCat 这一步可能需要你按提示选择安装方式，并扫码登录 QQ 
 
 ### 0. 打开 NapCat WebUI
 
-NapCat WebUI 默认不要开放公网端口。使用 SSH 隧道：
+NapCat WebUI 有两种打开方式。
+
+推荐方式是 SSH 隧道，不需要开放 `6099`：
 
 ```bash
 ssh -L 6099:127.0.0.1:6099 root@<服务器 IP>
@@ -68,6 +70,14 @@ journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebU
 ```text
 http://127.0.0.1:6099/webui?token=<TOKEN>
 ```
+
+如果你不会用 SSH 隧道，也可以临时在云服务器安全组放行 TCP `6099`，然后访问：
+
+```text
+http://<服务器公网 IP>:6099/webui?token=<TOKEN>
+```
+
+扫码和配置完成后，立刻删除安全组里的 `6099` 入站规则。不要长期公网暴露 NapCat WebUI。
 
 如果没有 `napcat.service`，先创建：
 
@@ -106,7 +116,9 @@ curl -sS http://127.0.0.1:18887/health
 
 ### 2. 打开 AstrBot WebUI
 
-在本地电脑开 SSH 隧道：
+AstrBot WebUI 也有两种打开方式。
+
+推荐方式是 SSH 隧道，不需要开放 `6185`：
 
 ```bash
 ssh -L 6185:127.0.0.1:6185 root@<服务器 IP>
@@ -117,6 +129,14 @@ ssh -L 6185:127.0.0.1:6185 root@<服务器 IP>
 ```text
 http://127.0.0.1:6185
 ```
+
+如果你不会用 SSH 隧道，也可以临时在云服务器安全组放行 TCP `6185`，然后访问：
+
+```text
+http://<服务器公网 IP>:6185
+```
+
+配置完成后，立刻删除安全组里的 `6185` 入站规则。不要长期公网暴露 AstrBot Dashboard。
 
 首次用户名和密码看 AstrBot 日志：
 
