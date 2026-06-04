@@ -159,8 +159,9 @@ install_python_requirements() {
   local dir="$1"
   cd "$dir"
   "$UV_BIN" pip install --python "$dir/venv/bin/python" -U pip
-  "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt -i "$PIP_INDEX_URL" || \
-    "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt -i "$PIP_FALLBACK_INDEX_URL" || \
+  "$UV_BIN" pip install --python "$dir/venv/bin/python" --only-binary=:all: -r requirements.txt -i "$PIP_INDEX_URL" || \
+    "$UV_BIN" pip install --python "$dir/venv/bin/python" --only-binary=:all: -r requirements.txt -i "$PIP_FALLBACK_INDEX_URL" || \
+    "$UV_BIN" pip install --python "$dir/venv/bin/python" --only-binary=:all: -r requirements.txt || \
     "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt
   chown -R qqbot:qqbot "$dir/venv"
 }
