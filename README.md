@@ -59,7 +59,7 @@ curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/m
 - 安装系统依赖。
 - 创建 `qqbot` 服务用户。
 - 拉取本项目到 `/opt/chat-qqrobot`。
-- 源码安装 AstrBot 到 `/opt/AstrBot`。
+- 源码安装 AstrBot 到 `/opt/AstrBot`，国内默认使用 Gitee 镜像，GitHub 作为备用。
 - 安装群聊记忆插件。
 - 安装 Web Chat 到 `/opt/xigua-web-chat`。
 - 写入 `/etc/qqbot/*.env`。

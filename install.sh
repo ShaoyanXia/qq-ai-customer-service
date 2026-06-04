@@ -5,6 +5,7 @@ PROJECT_DIR="/opt/chat-qqrobot"
 ASTRBOT_DIR="/opt/AstrBot"
 WEB_DIR="/opt/xigua-web-chat"
 REPO_URL="${REPO_URL:-}"
+ASTRBOT_REPO_URL="${ASTRBOT_REPO_URL:-https://gitee.com/forqsg/AstrBot.git}"
 BRANCH="${BRANCH:-main}"
 INSTALL_NAPCAT=1
 UV_BIN=""
@@ -19,6 +20,7 @@ Usage:
 
 Options:
   --repo <url>          Git repository URL of this project.
+  --astrbot-repo <url>  AstrBot repository URL. Default: a Gitee mirror for China servers.
   --branch <name>       Git branch to install. Default: main.
   --python <version>    Python version for AstrBot. Default: 3.12.
   --project-dir <path>  Project install path. Default: /opt/chat-qqrobot.
@@ -36,6 +38,10 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --repo)
       REPO_URL="$2"
+      shift 2
+      ;;
+    --astrbot-repo)
+      ASTRBOT_REPO_URL="$2"
       shift 2
       ;;
     --branch)
@@ -204,7 +210,7 @@ else
     echo "$ASTRBOT_DIR exists and is not a git repository. Move it away or choose --astrbot-dir." >&2
     exit 1
   fi
-  git clone https://github.com/AstrBotDevs/AstrBot.git "$ASTRBOT_DIR"
+  git clone "$ASTRBOT_REPO_URL" "$ASTRBOT_DIR" || git clone https://github.com/AstrBotDevs/AstrBot.git "$ASTRBOT_DIR"
   chown -R qqbot:qqbot "$ASTRBOT_DIR"
 fi
 create_python_venv "$ASTRBOT_DIR"

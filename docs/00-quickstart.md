@@ -40,6 +40,12 @@ curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/m
 
 NapCat 这一步可能需要你按提示选择安装方式，并扫码登录 QQ 小号。
 
+如果你想指定自己的 AstrBot 镜像，可以追加：
+
+```bash
+--astrbot-repo https://gitee.com/<你的用户名>/AstrBot.git
+```
+
 ## 安装后配置
 
 ### 1. 配置 Web Chat 模型参数
