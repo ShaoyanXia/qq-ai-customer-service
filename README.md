@@ -40,7 +40,7 @@ flowchart LR
 
 ## 一行命令部署
 
-先把这个目录发布成独立 Git 仓库，例如 GitHub 或 Gitee。发布后，用户可以在服务器上执行一行命令：
+在服务器上执行下面这一行命令即可开始安装：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/main/install.sh | sudo bash -s -- --repo https://github.com/ShaoyanXia/qq-ai-customer-service.git

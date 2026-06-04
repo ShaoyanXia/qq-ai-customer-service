@@ -20,7 +20,7 @@
 
 ## 最短路径
 
-已经有服务器时，发布本项目到 GitHub 或 Gitee 后，在服务器执行：
+已经有服务器时，直接执行：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/main/install.sh | sudo bash -s -- --repo https://github.com/ShaoyanXia/qq-ai-customer-service.git

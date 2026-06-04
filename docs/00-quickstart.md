@@ -10,7 +10,7 @@
 - 一个 QQ 小号，用来当机器人。
 - 一个 OpenAI 兼容模型 API key。
 - 一个已经创建好的 QQ 群，小号需要先加入群。
-- 一个本项目的 Git 仓库地址，例如 GitHub 或 Gitee。
+- 能通过 SSH 登录服务器，并拥有 sudo 权限。
 
 不建议使用 Docker 部署 NapCat，因为 Docker 版 NapCat 里的 QQ 更容易退出登录，后续经常需要重新扫码。
 
