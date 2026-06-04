@@ -167,6 +167,8 @@ ws://127.0.0.1:6199/ws
 
 连接成功后，AstrBot 控制台会显示 OneBot v11 adapter connected。
 
+更详细的图文式步骤见：[NapCat 连接 AstrBot](06-napcat-onebot.md)。
+
 ## NapCat 常见坑
 
 ### SSH 隧道提示 Connection refused

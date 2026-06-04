@@ -39,6 +39,7 @@ flowchart LR
 - [运维和排障手册](docs/03-runbook.md)
 - [客服提示词和知识库策略](docs/04-prompts.md)
 - [安全边界](docs/05-security.md)
+- [NapCat 连接 AstrBot](docs/06-napcat-onebot.md)
 
 ## 一行命令部署
 

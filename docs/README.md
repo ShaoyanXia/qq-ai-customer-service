@@ -10,6 +10,7 @@
 4. [运维和排障手册](03-runbook.md)
 5. [客服提示词和知识库策略](04-prompts.md)
 6. [安全边界](05-security.md)
+7. [NapCat 连接 AstrBot](06-napcat-onebot.md)
 
 ## 适合谁
 

@@ -55,6 +55,31 @@ systemctl status napcat.service --no-pager -l
 ss -lntp | grep 6099
 ```
 
+## 配置 OneBot v11 反向 WebSocket
+
+先在 AstrBot WebUI 创建并启用 OneBot v11，监听：
+
+```text
+0.0.0.0:6199
+路径 /ws
+```
+
+再在 NapCat WebUI 的“网络配置”里新建 `WebSocket 客户端`，URL 填：
+
+```text
+ws://127.0.0.1:6199/ws
+```
+
+配置完成后验证：
+
+```bash
+ss -lntp | grep 6199
+journalctl -u astrbot.service --since "5 minutes ago" --no-pager | grep -Ei "onebot|aiocqhttp|connected|websocket|连接"
+journalctl -u napcat.service --since "5 minutes ago" --no-pager | grep -Ei "websocket|onebot|连接|ws"
+```
+
+完整步骤见：[NapCat 连接 AstrBot](06-napcat-onebot.md)。
+
 ## 检查知识库数量
 
 ```bash
