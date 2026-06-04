@@ -276,7 +276,7 @@ cat <<EOF
 
 下一步：
 1. 编辑 /etc/qqbot/web-chat.env，填写 OPENAI_BASE_URL、OPENAI_API_KEY、OPENAI_MODEL、ACCESS_TOKEN。
-2. 在 AstrBot WebUI 里配置模型 provider 和客服 persona。
+2. 在 AstrBot WebUI 里配置模型 provider 和客服 persona。通用 persona 可复制：$PROJECT_DIR/configs/astrbot-persona.example.txt
 3. 打开 NapCat WebUI，扫码登录 QQ，并配置 OneBot v11 反向 WebSocket，地址为 ws://127.0.0.1:6199/ws。
 4. 修改配置后重启对应服务：
    systemctl restart astrbot.service

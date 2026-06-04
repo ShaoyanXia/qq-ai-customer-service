@@ -83,6 +83,7 @@ NapCat 的 QQ 登录和 OneBot 配置仍需要用户按提示完成扫码和连�
 ```text
 configs/
   astrbot.env.example
+  astrbot-persona.example.txt
   astrbot-provider.example.json
   web-chat.env.example
   systemd/

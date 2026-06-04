@@ -160,7 +160,13 @@ configs/astrbot-provider.example.json
 
 ### 4. 写入客服 persona
 
-把 [客服提示词和知识库策略](04-prompts.md) 里的“系统提示词”复制到 AstrBot persona。
+把项目里的通用客服约束复制到 AstrBot persona：
+
+```text
+/opt/chat-qqrobot/configs/astrbot-persona.example.txt
+```
+
+也可以参考 [客服提示词和知识库策略](04-prompts.md) 里的更详细版本。
 
 重点是限制机器人边界：
 
