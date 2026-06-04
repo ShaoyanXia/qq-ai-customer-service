@@ -11,6 +11,7 @@
 5. [客服提示词和知识库策略](04-prompts.md)
 6. [安全边界](05-security.md)
 7. [NapCat 连接 AstrBot](06-napcat-onebot.md)
+8. [一键卸载](07-uninstall.md)
 
 ## 适合谁
 

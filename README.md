@@ -40,6 +40,7 @@ flowchart LR
 - [客服提示词和知识库策略](docs/04-prompts.md)
 - [安全边界](docs/05-security.md)
 - [NapCat 连接 AstrBot](docs/06-napcat-onebot.md)
+- [一键卸载](docs/07-uninstall.md)
 
 ## 一行命令部署
 
@@ -93,6 +94,7 @@ plugins/
   astrbot_plugin_group_memory/
 scripts/
 web-chat/
+uninstall.sh
 ```
 
 ## 最小验收清单
@@ -113,6 +115,22 @@ web-chat/
 - Web Chat 如需公网访问，必须加 token 或反向代理鉴权。
 - 不要把 API key、QQ 登录二维码、root 密码、后台凭据写入 Markdown、Git、截图或群消息。
 - 改插件或 provider 配置时优先只重启 AstrBot；不到必须，不重启 NapCat。
+
+## 卸载
+
+先预览会删除什么：
+
+```bash
+curl -fsSL https://gitee.com/xiashaoyan/qq-ai-customer-service/raw/main/uninstall.sh | sudo bash -s -- --dry-run
+```
+
+确认卸载：
+
+```bash
+curl -fsSL https://gitee.com/xiashaoyan/qq-ai-customer-service/raw/main/uninstall.sh | sudo bash -s -- --yes
+```
+
+卸载脚本只删除本项目安装的服务和目录，不卸载系统包，避免影响服务器上的其它服务。
 
 ## 参考资料
 
