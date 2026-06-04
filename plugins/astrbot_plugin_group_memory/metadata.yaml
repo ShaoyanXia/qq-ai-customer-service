@@ -1,0 +1,11 @@
+name: astrbot_plugin_group_memory
+display_name: QQ Group Memory
+desc: Store QQ group messages in SQLite and inject lightweight customer-service memory context.
+short_desc: QQ group memory and customer-service context.
+version: 0.1.0
+author: xigua-ai
+repo: ""
+support_platforms:
+  - aiocqhttp
+astrbot_version: ">=4.9.2"
+

@@ -1,0 +1,26 @@
+{
+  "provider_sources": [
+    {
+      "id": "openai_compatible_source",
+      "provider": "openai",
+      "type": "openai_chat_completion",
+      "provider_type": "chat_completion",
+      "key": ["<OPENAI_COMPATIBLE_API_KEY>"],
+      "api_base": "https://<YOUR_API_HOST>/v1",
+      "timeout": 120,
+      "proxy": "",
+      "custom_headers": {}
+    }
+  ],
+  "provider": [
+    {
+      "id": "openai_compatible_chat",
+      "enable": true,
+      "model": "<MODEL_NAME>",
+      "provider_source_id": "openai_compatible_source",
+      "modalities": ["image"],
+      "custom_extra_body": {}
+    }
+  ]
+}
+

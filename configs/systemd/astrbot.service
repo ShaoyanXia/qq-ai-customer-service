@@ -1,0 +1,16 @@
+[Unit]
+Description=AstrBot QQ customer service bot
+After=network.target
+
+[Service]
+Type=simple
+User=qqbot
+Group=qqbot
+WorkingDirectory=/opt/AstrBot
+EnvironmentFile=-/etc/qqbot/astrbot.env
+ExecStart=/opt/AstrBot/venv/bin/python /opt/AstrBot/main.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
