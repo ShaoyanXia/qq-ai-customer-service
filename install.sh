@@ -7,6 +7,8 @@ WEB_DIR="/opt/xigua-web-chat"
 REPO_URL="${REPO_URL:-}"
 BRANCH="${BRANCH:-main}"
 INSTALL_NAPCAT=1
+UV_BIN=""
+PYTHON_VERSION="${PYTHON_VERSION:-3.12}"
 
 usage() {
   cat <<'EOF'
@@ -16,6 +18,7 @@ Usage:
 Options:
   --repo <url>          Git repository URL of this project.
   --branch <name>       Git branch to install. Default: main.
+  --python <version>    Python version for AstrBot. Default: 3.12.
   --project-dir <path>  Project install path. Default: /opt/chat-qqrobot.
   --astrbot-dir <path>  AstrBot install path. Default: /opt/AstrBot.
   --web-dir <path>      Web Chat install path. Default: /opt/xigua-web-chat.
@@ -35,6 +38,10 @@ while [ $# -gt 0 ]; do
       ;;
     --branch)
       BRANCH="$2"
+      shift 2
+      ;;
+    --python)
+      PYTHON_VERSION="$2"
       shift 2
       ;;
     --project-dir)
@@ -101,9 +108,57 @@ install_system_packages() {
   exit 1
 }
 
+install_uv() {
+  if command -v uv >/dev/null 2>&1; then
+    UV_BIN="$(command -v uv)"
+    return
+  fi
+
+  if [ -x /root/.local/bin/uv ]; then
+    UV_BIN="/root/.local/bin/uv"
+    return
+  fi
+
+  echo "Installing uv for Python runtime management..."
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  if [ -x /root/.local/bin/uv ]; then
+    UV_BIN="/root/.local/bin/uv"
+    return
+  fi
+
+  echo "uv installation failed." >&2
+  exit 1
+}
+
+venv_python_matches() {
+  local dir="$1"
+  [ -x "$dir/venv/bin/python" ] || return 1
+  "$dir/venv/bin/python" - <<PY
+import sys
+want = tuple(map(int, "${PYTHON_VERSION}".split(".")[:2]))
+have = sys.version_info[:2]
+raise SystemExit(0 if have >= want else 1)
+PY
+}
+
 create_python_venv() {
   local dir="$1"
-  run_as_qqbot "cd '$dir' && (python3 -m venv venv || (python3 -m pip install --user virtualenv && python3 -m virtualenv venv))"
+  install_uv
+  "$UV_BIN" python install "$PYTHON_VERSION"
+  if ! venv_python_matches "$dir"; then
+    rm -rf "$dir/venv"
+    cd "$dir"
+    "$UV_BIN" venv --python "$PYTHON_VERSION" venv
+    chown -R qqbot:qqbot "$dir/venv"
+  fi
+}
+
+install_python_requirements() {
+  local dir="$1"
+  cd "$dir"
+  "$UV_BIN" pip install --python "$dir/venv/bin/python" -U pip
+  "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+  chown -R qqbot:qqbot "$dir/venv"
 }
 
 echo "[1/9] Installing system packages..."
@@ -139,7 +194,7 @@ else
   chown -R qqbot:qqbot "$ASTRBOT_DIR"
 fi
 create_python_venv "$ASTRBOT_DIR"
-run_as_qqbot "cd '$ASTRBOT_DIR' && source venv/bin/activate && pip install -U pip && pip install -r requirements.txt"
+install_python_requirements "$ASTRBOT_DIR"
 
 echo "[5/9] Installing memory plugin..."
 run_as_qqbot "mkdir -p '$ASTRBOT_DIR/data/plugins/astrbot_plugin_group_memory'"
@@ -148,7 +203,7 @@ run_as_qqbot "cp -a '$PROJECT_DIR/plugins/astrbot_plugin_group_memory/.' '$ASTRB
 echo "[6/9] Installing Web Chat..."
 run_as_qqbot "cp -a '$PROJECT_DIR/web-chat/.' '$WEB_DIR/'"
 create_python_venv "$WEB_DIR"
-run_as_qqbot "cd '$WEB_DIR' && source venv/bin/activate && pip install -U pip && pip install -r requirements.txt"
+install_python_requirements "$WEB_DIR"
 
 echo "[7/9] Writing environment files..."
 if [ ! -f /etc/qqbot/astrbot.env ]; then

@@ -2,7 +2,7 @@
 
 这是一个面向服务器部署的 QQ 群智能客服开源方案。它基于 NapCatQQ + AstrBot + OpenAI 兼容模型 API，提供群聊机器人、群聊记忆、长期 FAQ 沉淀、网页测试入口和日常运维手册。
 
-安装脚本支持 Ubuntu、Debian、CentOS、RHEL、Alibaba Cloud Linux 等常见服务器系统，会自动识别 `apt-get`、`dnf` 或 `yum`。
+安装脚本支持 Ubuntu、Debian、CentOS、RHEL、Alibaba Cloud Linux 等常见服务器系统，会自动识别 `apt-get`、`dnf` 或 `yum`，并通过 `uv` 自动准备 AstrBot 所需的新版 Python。
 
 本项目不推荐 Docker 部署 NapCat。实践里 Docker 版 NapCat 的 QQ 登录状态更容易失效，重启或容器异常后经常需要重新扫码；本项目默认采用 Linux 原生部署和 systemd 托管。
 
