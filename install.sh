@@ -177,7 +177,7 @@ chmod 750 /etc/qqbot
 
 echo "[3/9] Fetching this project..."
 if [ -d "$PROJECT_DIR/.git" ]; then
-  run_as_qqbot "cd '$PROJECT_DIR' && git fetch --all --prune && git checkout '$BRANCH' && git pull --ff-only"
+  run_as_qqbot "cd '$PROJECT_DIR' && git remote set-url origin '$REPO_URL' && git fetch origin '$BRANCH' --prune && git checkout '$BRANCH' && git pull --ff-only origin '$BRANCH'"
 else
   if [ -d "$PROJECT_DIR" ] && [ "$(find "$PROJECT_DIR" -mindepth 1 -maxdepth 1 | head -n 1)" ]; then
     echo "$PROJECT_DIR exists and is not a git repository. Move it away or choose --project-dir." >&2
@@ -189,7 +189,7 @@ fi
 
 echo "[4/9] Installing AstrBot from source..."
 if [ -d "$ASTRBOT_DIR/.git" ]; then
-  run_as_qqbot "cd '$ASTRBOT_DIR' && git pull --ff-only"
+  echo "AstrBot already exists at $ASTRBOT_DIR, skip source update to avoid GitHub connectivity issues."
 else
   if [ -d "$ASTRBOT_DIR" ] && [ "$(find "$ASTRBOT_DIR" -mindepth 1 -maxdepth 1 | head -n 1)" ]; then
     echo "$ASTRBOT_DIR exists and is not a git repository. Move it away or choose --astrbot-dir." >&2
