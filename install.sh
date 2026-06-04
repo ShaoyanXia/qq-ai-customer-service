@@ -80,9 +80,34 @@ run_as_qqbot() {
   runuser -u qqbot -- bash -lc "$*"
 }
 
+install_system_packages() {
+  if command -v apt-get >/dev/null 2>&1; then
+    apt-get update
+    apt-get install -y git curl ca-certificates python3 python3-venv python3-pip sqlite3 unzip xvfb
+    return
+  fi
+
+  if command -v dnf >/dev/null 2>&1; then
+    dnf install -y git curl ca-certificates python3 python3-pip sqlite unzip xorg-x11-server-Xvfb
+    return
+  fi
+
+  if command -v yum >/dev/null 2>&1; then
+    yum install -y git curl ca-certificates python3 python3-pip sqlite unzip xorg-x11-server-Xvfb
+    return
+  fi
+
+  echo "No supported package manager found. Supported: apt-get, dnf, yum." >&2
+  exit 1
+}
+
+create_python_venv() {
+  local dir="$1"
+  run_as_qqbot "cd '$dir' && (python3 -m venv venv || (python3 -m pip install --user virtualenv && python3 -m virtualenv venv))"
+}
+
 echo "[1/9] Installing system packages..."
-apt-get update
-apt-get install -y git curl ca-certificates python3 python3-venv python3-pip sqlite3 unzip xvfb
+install_system_packages
 
 echo "[2/9] Creating service user and directories..."
 useradd -r -m -s /bin/bash qqbot || true
@@ -113,7 +138,7 @@ else
   git clone https://github.com/AstrBotDevs/AstrBot.git "$ASTRBOT_DIR"
   chown -R qqbot:qqbot "$ASTRBOT_DIR"
 fi
-run_as_qqbot "cd '$ASTRBOT_DIR' && python3 -m venv venv"
+create_python_venv "$ASTRBOT_DIR"
 run_as_qqbot "cd '$ASTRBOT_DIR' && source venv/bin/activate && pip install -U pip && pip install -r requirements.txt"
 
 echo "[5/9] Installing memory plugin..."
@@ -122,7 +147,7 @@ run_as_qqbot "cp -a '$PROJECT_DIR/plugins/astrbot_plugin_group_memory/.' '$ASTRB
 
 echo "[6/9] Installing Web Chat..."
 run_as_qqbot "cp -a '$PROJECT_DIR/web-chat/.' '$WEB_DIR/'"
-run_as_qqbot "cd '$WEB_DIR' && python3 -m venv venv"
+create_python_venv "$WEB_DIR"
 run_as_qqbot "cd '$WEB_DIR' && source venv/bin/activate && pip install -U pip && pip install -r requirements.txt"
 
 echo "[7/9] Writing environment files..."

@@ -6,7 +6,7 @@
 
 你需要：
 
-- 一台 Linux 服务器，推荐 Ubuntu 22.04/24.04 或 Debian 12。
+- 一台 Linux 服务器，支持 Ubuntu、Debian、CentOS、RHEL、Alibaba Cloud Linux 等常见系统。
 - 一个 QQ 小号，用来当机器人。
 - 一个 OpenAI 兼容模型 API key。
 - 一个已经创建好的 QQ 群，小号需要先加入群。

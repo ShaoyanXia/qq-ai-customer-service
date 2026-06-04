@@ -1,6 +1,6 @@
 # 原生部署指南
 
-本指南默认目标系统为 Ubuntu 22.04/24.04 或 Debian 12。原则是：NapCatQQ 使用 Shell/Launcher 原生运行，AstrBot 使用源码或 uv 运行，二者交给 systemd 托管。
+本指南支持 Ubuntu、Debian、CentOS、RHEL、Alibaba Cloud Linux 等常见服务器系统。原则是：NapCatQQ 使用 Shell/Launcher 原生运行，AstrBot 使用源码或 uv 运行，二者交给 systemd 托管。
 
 如果你已经把本项目发布到 Git 仓库，优先使用根目录的 `install.sh`：
 
