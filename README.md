@@ -45,7 +45,7 @@ flowchart LR
 国内服务器建议使用 Gitee 地址：
 
 ```bash
-git clone --depth=1 https://gitee.com/xiashaoyan/qq-ai-customer-service.git /tmp/qq-ai-customer-service && sudo bash /tmp/qq-ai-customer-service/install.sh --repo https://gitee.com/xiashaoyan/qq-ai-customer-service.git
+curl -fsSL https://gitee.com/xiashaoyan/qq-ai-customer-service/raw/main/install.sh | sudo bash -s -- --repo https://gitee.com/xiashaoyan/qq-ai-customer-service.git
 ```
 
 如果服务器访问 GitHub 稳定，也可以使用 GitHub：
