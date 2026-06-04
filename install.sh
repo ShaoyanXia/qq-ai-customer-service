@@ -169,12 +169,14 @@ install_python_requirements() {
     --only-binary=:all: \
     --no-binary=aiocqhttp \
     --no-binary=python-ripgrep \
+    --no-binary=jieba \
     -r requirements.txt \
     -i "$PIP_INDEX_URL" || \
     "$UV_BIN" pip install --python "$dir/venv/bin/python" \
       --only-binary=:all: \
       --no-binary=aiocqhttp \
       --no-binary=python-ripgrep \
+      --no-binary=jieba \
       -r requirements.txt \
       -i "$PIP_FALLBACK_INDEX_URL" || \
     CXXFLAGS="${CXXFLAGS:-} -std=c++11" "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt -i "$PIP_FALLBACK_INDEX_URL"
