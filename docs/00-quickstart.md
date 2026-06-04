@@ -37,6 +37,7 @@ curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/m
 - 安装 Web Chat。
 - 创建 systemd 服务。
 - 启动 NapCat 原生 Shell 安装流程。
+- 自动创建 `napcat.service`，避免手动前台启动后 SSH 一关 NapCat 就退出。
 
 NapCat 这一步可能需要你按提示选择安装方式，并扫码登录 QQ 小号。
 
@@ -47,6 +48,32 @@ NapCat 这一步可能需要你按提示选择安装方式，并扫码登录 QQ 
 ```
 
 ## 安装后配置
+
+### 0. 打开 NapCat WebUI
+
+NapCat WebUI 默认不要开放公网端口。使用 SSH 隧道：
+
+```bash
+ssh -L 6099:127.0.0.1:6099 root@<服务器 IP>
+```
+
+保持这个窗口不要关闭，然后在本地浏览器打开 NapCat 日志里给出的地址。查看地址和 token：
+
+```bash
+journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebUi|6099|token"
+```
+
+通常类似：
+
+```text
+http://127.0.0.1:6099/webui?token=<TOKEN>
+```
+
+如果没有 `napcat.service`，先创建：
+
+```bash
+sudo bash /opt/chat-qqrobot/scripts/setup-napcat-service.sh
+```
 
 ### 1. 配置 Web Chat 模型参数
 
@@ -139,6 +166,39 @@ ws://127.0.0.1:6199/ws
 ```
 
 连接成功后，AstrBot 控制台会显示 OneBot v11 adapter connected。
+
+## NapCat 常见坑
+
+### SSH 隧道提示 Connection refused
+
+说明服务器本机 `127.0.0.1:6099` 没有服务监听。检查：
+
+```bash
+systemctl status napcat.service --no-pager -l
+ss -lntp | grep 6099
+```
+
+### 手动运行 NapCat 后 SSH 一关就退出
+
+不要长期用这种前台方式：
+
+```bash
+xvfb-run -a /root/Napcat/opt/QQ/qq --no-sandbox
+```
+
+改用 systemd：
+
+```bash
+sudo bash /opt/chat-qqrobot/scripts/setup-napcat-service.sh
+```
+
+### 看不到 WebUI token
+
+从日志里查：
+
+```bash
+journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebUi|6099|token"
+```
 
 ## 验收
 

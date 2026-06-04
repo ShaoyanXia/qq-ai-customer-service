@@ -65,6 +65,7 @@ curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/m
 - 写入 `/etc/qqbot/*.env`。
 - 安装并启动 systemd 服务。
 - 启动 NapCat Shell 原生安装流程。
+- 如果检测到 `/root/Napcat/opt/QQ/qq`，自动创建 `napcat.service`，避免前台窗口关闭后 NapCat 退出。
 
 NapCat 的 QQ 登录和 OneBot 配置仍需要用户按提示完成扫码和连接，这是 QQ 登录机制决定的，不能完全无人值守。
 
@@ -95,6 +96,7 @@ web-chat/
 ## 最小验收清单
 
 - QQ 小号在线，NapCat WebUI 可通过 SSH 隧道访问。
+- `systemctl status napcat.service` 正常。
 - AstrBot WebUI 可本机访问，OneBot v11 显示已连接。
 - 群内 @机器人 能回复，且不跑出客服边界。
 - `/chatmem_status` 能看到消息数增长。

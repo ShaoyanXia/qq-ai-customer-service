@@ -3,19 +3,21 @@
 ## 服务状态
 
 ```bash
+systemctl status napcat.service --no-pager -l
 systemctl status astrbot.service --no-pager -l
 systemctl status xigua-web-chat.service --no-pager -l
 ```
 
-NapCat 如果由官方 Shell/Launcher 安装，按安装脚本生成的服务名检查。常见做法：
+如果 NapCat 还没有 systemd 服务，运行：
 
 ```bash
-systemctl list-units --type=service | grep -i napcat
+sudo bash /opt/chat-qqrobot/scripts/setup-napcat-service.sh
 ```
 
 ## 日志查看
 
 ```bash
+journalctl -u napcat.service --since "30 minutes ago" --no-pager
 journalctl -u astrbot.service --since "30 minutes ago" --no-pager
 journalctl -u xigua-web-chat.service --since "30 minutes ago" --no-pager
 ```
@@ -25,6 +27,33 @@ journalctl -u xigua-web-chat.service --since "30 minutes ago" --no-pager
 - 改 Web Chat，只重启 `xigua-web-chat.service`。
 - 改 AstrBot 插件、persona、provider，只重启 `astrbot.service`。
 - 不到必须，不重启 NapCat，避免 QQ 小号重新扫码。
+
+## 打开 NapCat WebUI
+
+不要开放 `6099` 到公网。使用 SSH 隧道：
+
+```bash
+ssh -L 6099:127.0.0.1:6099 root@<SERVER_IP>
+```
+
+查看 WebUI 地址和 token：
+
+```bash
+journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebUi|6099|token"
+```
+
+本地浏览器打开类似地址：
+
+```text
+http://127.0.0.1:6099/webui?token=<TOKEN>
+```
+
+如果浏览器打开时报 SSH 里的 `Connection refused`，说明 NapCat 没在服务器本机监听 `6099`：
+
+```bash
+systemctl status napcat.service --no-pager -l
+ss -lntp | grep 6099
+```
 
 ## 检查知识库数量
 
@@ -127,4 +156,3 @@ SQLite 在线备份：
 ```bash
 sqlite3 /opt/AstrBot/data/plugin_data/astrbot_plugin_group_memory/chat_memory.sqlite3 ".backup '/opt/qqbot-backups/chat_memory_backup.sqlite3'"
 ```
-
