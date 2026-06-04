@@ -9,6 +9,8 @@ BRANCH="${BRANCH:-main}"
 INSTALL_NAPCAT=1
 UV_BIN=""
 PYTHON_VERSION="${PYTHON_VERSION:-3.12}"
+PIP_INDEX_URL="${PIP_INDEX_URL:-https://pypi.tuna.tsinghua.edu.cn/simple}"
+PIP_FALLBACK_INDEX_URL="${PIP_FALLBACK_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}"
 
 usage() {
   cat <<'EOF'
@@ -157,7 +159,9 @@ install_python_requirements() {
   local dir="$1"
   cd "$dir"
   "$UV_BIN" pip install --python "$dir/venv/bin/python" -U pip
-  "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+  "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt -i "$PIP_INDEX_URL" || \
+    "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt -i "$PIP_FALLBACK_INDEX_URL" || \
+    "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt
   chown -R qqbot:qqbot "$dir/venv"
 }
 
