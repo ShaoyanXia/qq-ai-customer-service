@@ -10,6 +10,7 @@ BRANCH="${BRANCH:-main}"
 INSTALL_NAPCAT=1
 UV_BIN=""
 PYTHON_VERSION="${PYTHON_VERSION:-3.12}"
+UV_PYTHON_INSTALL_DIR="${UV_PYTHON_INSTALL_DIR:-/opt/qqbot-python}"
 PIP_INDEX_URL="${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}"
 PIP_FALLBACK_INDEX_URL="${PIP_FALLBACK_INDEX_URL:-https://pypi.org/simple}"
 
@@ -151,12 +152,26 @@ PY
 
 create_python_venv() {
   local dir="$1"
+  if command -v python3 >/dev/null 2>&1 && python3 - <<'PY'
+import sys
+raise SystemExit(0 if sys.version_info >= (3, 10) else 1)
+PY
+  then
+    if ! venv_python_matches "$dir"; then
+      rm -rf "$dir/venv"
+      run_as_qqbot "cd '$dir' && python3 -m venv venv"
+    fi
+    return
+  fi
+
   install_uv
-  "$UV_BIN" python install "$PYTHON_VERSION"
+  mkdir -p "$UV_PYTHON_INSTALL_DIR"
+  chmod 755 "$UV_PYTHON_INSTALL_DIR"
+  UV_PYTHON_INSTALL_DIR="$UV_PYTHON_INSTALL_DIR" "$UV_BIN" python install "$PYTHON_VERSION"
   if ! venv_python_matches "$dir"; then
     rm -rf "$dir/venv"
     cd "$dir"
-    "$UV_BIN" venv --python "$PYTHON_VERSION" venv
+    UV_PYTHON_INSTALL_DIR="$UV_PYTHON_INSTALL_DIR" "$UV_BIN" venv --python "$PYTHON_VERSION" venv
     chown -R qqbot:qqbot "$dir/venv"
   fi
 }

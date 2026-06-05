@@ -8,6 +8,7 @@ NAPCAT_DIR="${NAPCAT_DIR:-/root/Napcat}"
 NAPCAT_INSTALL_DIR="${NAPCAT_INSTALL_DIR:-/opt/napcat}"
 BACKUP_DIR="${BACKUP_DIR:-/opt/qqbot-backups}"
 CONFIG_DIR="${CONFIG_DIR:-/etc/qqbot}"
+UV_PYTHON_INSTALL_DIR="${UV_PYTHON_INSTALL_DIR:-/opt/qqbot-python}"
 REMOVE_NAPCAT=1
 REMOVE_CONFIG=1
 REMOVE_BACKUPS=0
@@ -118,6 +119,7 @@ cat <<EOF
   - $PROJECT_DIR
   - $ASTRBOT_DIR
   - $WEB_DIR
+  - $UV_PYTHON_INSTALL_DIR
 EOF
 
 if [ "$REMOVE_NAPCAT" -eq 1 ]; then
@@ -167,6 +169,7 @@ run systemctl daemon-reload
 remove_path "$PROJECT_DIR"
 remove_path "$ASTRBOT_DIR"
 remove_path "$WEB_DIR"
+remove_path "$UV_PYTHON_INSTALL_DIR"
 
 if [ "$REMOVE_NAPCAT" -eq 1 ]; then
   remove_path "$NAPCAT_DIR"

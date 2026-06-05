@@ -139,6 +139,33 @@ python3 scripts/check_memory_db.py \
 curl -sS http://127.0.0.1:18887/health
 ```
 
+如果提示无法连接，先看服务状态和日志：
+
+```bash
+systemctl status xigua-web-chat.service --no-pager -l
+journalctl -u xigua-web-chat.service --since "10 minutes ago" --no-pager
+```
+
+如果日志里有：
+
+```text
+Failed to execute /opt/xigua-web-chat/venv/bin/python: Permission denied
+```
+
+说明虚拟环境里的 Python 指向了 root 目录下的 uv Python，`qqbot` 服务用户没有执行权限。直接重建 Web Chat venv：
+
+```bash
+systemctl stop xigua-web-chat.service
+rm -rf /opt/xigua-web-chat/venv
+cd /opt/xigua-web-chat
+python3 -m venv venv
+/opt/xigua-web-chat/venv/bin/pip install -U pip
+/opt/xigua-web-chat/venv/bin/pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
+chown -R qqbot:qqbot /opt/xigua-web-chat/venv
+systemctl restart xigua-web-chat.service
+curl -sS http://127.0.0.1:18887/health
+```
+
 ```bash
 curl -sS --max-time 120 \
   -H 'Content-Type: application/json' \
