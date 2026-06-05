@@ -57,13 +57,25 @@ http://127.0.0.1:6099/webui?token=<TOKEN>
 ufw allow 6099/tcp
 ```
 
-3. 浏览器打开：
+3. 先查看 WebUI token：
+
+```bash
+journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebUi|6099|token"
+```
+
+日志里会出现类似：
+
+```text
+http://127.0.0.1:6099/webui?token=<TOKEN>
+```
+
+4. 把 `<TOKEN>` 拼到公网地址里，浏览器打开：
 
 ```text
 http://<SERVER_IP>:6099/webui?token=<TOKEN>
 ```
 
-4. 配置完成后关闭：
+5. 配置完成后关闭：
 
 ```bash
 ufw delete allow 6099/tcp

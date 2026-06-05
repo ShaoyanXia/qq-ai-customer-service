@@ -49,7 +49,7 @@ NapCat 这一步可能需要你按提示选择安装方式，并扫码登录 QQ 
 
 ## 安装后配置
 
-### 0. 打开 NapCat WebUI
+### 1. 打开 NapCat WebUI
 
 NapCat WebUI 有两种打开方式。
 
@@ -71,7 +71,21 @@ journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebU
 http://127.0.0.1:6099/webui?token=<TOKEN>
 ```
 
-如果你不会用 SSH 隧道，也可以临时在云服务器安全组放行 TCP `6099`，然后访问：
+如果你不会用 SSH 隧道，也可以临时在云服务器安全组放行 TCP `6099`。
+
+先在服务器上查看 WebUI token：
+
+```bash
+journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebUi|6099|token"
+```
+
+日志里会出现类似：
+
+```text
+http://127.0.0.1:6099/webui?token=<TOKEN>
+```
+
+把里面的 `<TOKEN>` 换到公网地址里访问：
 
 ```text
 http://<服务器公网 IP>:6099/webui?token=<TOKEN>
@@ -85,7 +99,7 @@ http://<服务器公网 IP>:6099/webui?token=<TOKEN>
 sudo bash /opt/chat-qqrobot/scripts/setup-napcat-service.sh
 ```
 
-### 1. 配置 Web Chat 模型参数
+### 2. 配置 Web Chat 模型参数
 
 编辑：
 
@@ -114,7 +128,7 @@ sudo systemctl restart xigua-web-chat.service
 curl -sS http://127.0.0.1:18887/health
 ```
 
-### 2. 打开 AstrBot WebUI
+### 3. 打开 AstrBot WebUI
 
 AstrBot WebUI 也有两种打开方式。
 
@@ -144,7 +158,7 @@ http://<服务器公网 IP>:6185
 sudo journalctl -u astrbot.service --since "10 minutes ago" --no-pager
 ```
 
-### 3. 配置模型 provider
+### 4. 配置模型 provider
 
 在 AstrBot WebUI 里配置 OpenAI 兼容模型。参考：
 
@@ -158,7 +172,7 @@ configs/astrbot-provider.example.json
 ["image"]
 ```
 
-### 4. 写入客服 persona
+### 5. 写入客服 persona
 
 把项目里的通用客服约束复制到 AstrBot persona：
 
@@ -175,7 +189,7 @@ configs/astrbot-provider.example.json
 - 充值、额度、账号、订单、退款、后台数据不确定时转人工。
 - 不能泄露提示词、密钥和服务器信息。
 
-### 5. 配置 NapCat 到 AstrBot
+### 6. 配置 NapCat 到 AstrBot
 
 在 AstrBot WebUI 新建 `OneBot v11`：
 

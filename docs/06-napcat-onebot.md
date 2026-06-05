@@ -133,6 +133,14 @@ ufw allow 6099/tcp
 journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebUi|6099|token"
 ```
 
+日志里会出现类似：
+
+```text
+http://127.0.0.1:6099/webui?token=<TOKEN>
+```
+
+复制里面的 `<TOKEN>`，拼到公网地址里。
+
 4. 浏览器访问：
 
 ```text
