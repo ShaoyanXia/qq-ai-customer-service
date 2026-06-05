@@ -181,22 +181,28 @@ PY
 install_python_requirements() {
   local dir="$1"
   cd "$dir"
-  "$UV_BIN" pip install --python "$dir/venv/bin/python" -U pip
-  "$UV_BIN" pip install --python "$dir/venv/bin/python" \
-    --only-binary=:all: \
-    --no-binary=aiocqhttp \
-    --no-binary=python-ripgrep \
-    --no-binary=jieba \
-    -r requirements.txt \
-    -i "$PIP_INDEX_URL" || \
+  if [ -z "$UV_BIN" ]; then
+    "$dir/venv/bin/pip" install -U pip
+    "$dir/venv/bin/pip" install -r requirements.txt -i "$PIP_INDEX_URL" || \
+      "$dir/venv/bin/pip" install -r requirements.txt -i "$PIP_FALLBACK_INDEX_URL"
+  else
+    "$UV_BIN" pip install --python "$dir/venv/bin/python" -U pip
     "$UV_BIN" pip install --python "$dir/venv/bin/python" \
       --only-binary=:all: \
       --no-binary=aiocqhttp \
       --no-binary=python-ripgrep \
       --no-binary=jieba \
       -r requirements.txt \
-      -i "$PIP_FALLBACK_INDEX_URL" || \
-    CXXFLAGS="${CXXFLAGS:-} -std=c++11" "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt -i "$PIP_FALLBACK_INDEX_URL"
+      -i "$PIP_INDEX_URL" || \
+      "$UV_BIN" pip install --python "$dir/venv/bin/python" \
+        --only-binary=:all: \
+        --no-binary=aiocqhttp \
+        --no-binary=python-ripgrep \
+        --no-binary=jieba \
+        -r requirements.txt \
+        -i "$PIP_FALLBACK_INDEX_URL" || \
+      CXXFLAGS="${CXXFLAGS:-} -std=c++11" "$UV_BIN" pip install --python "$dir/venv/bin/python" -r requirements.txt -i "$PIP_FALLBACK_INDEX_URL"
+  fi
   chown -R qqbot:qqbot "$dir/venv"
 }
 
