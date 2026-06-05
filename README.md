@@ -41,6 +41,7 @@ flowchart LR
 - [安全边界](docs/05-security.md)
 - [NapCat 连接 AstrBot](docs/06-napcat-onebot.md)
 - [一键卸载](docs/07-uninstall.md)
+- [QQ 登录后的收尾一键命令](docs/08-post-login-setup.md)
 
 ## 一行命令部署
 
@@ -70,6 +71,12 @@ curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/m
 - 如果检测到 `/root/Napcat/opt/QQ/qq`，自动创建 `napcat.service`，避免前台窗口关闭后 NapCat 退出。
 
 NapCat 的 QQ 登录和 OneBot 配置仍需要用户按提示完成扫码和连接，这是 QQ 登录机制决定的，不能完全无人值守。
+
+QQ 小号扫码登录后，可以执行收尾脚本：
+
+```bash
+curl -fsSL https://gitee.com/xiashaoyan/qq-ai-customer-service/raw/main/scripts/post-login-setup.sh | sudo bash
+```
 
 ## 手动快速开始
 

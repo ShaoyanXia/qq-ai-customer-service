@@ -12,6 +12,7 @@
 6. [安全边界](05-security.md)
 7. [NapCat 连接 AstrBot](06-napcat-onebot.md)
 8. [一键卸载](07-uninstall.md)
+9. [QQ 登录后的收尾一键命令](08-post-login-setup.md)
 
 ## 适合谁
 
