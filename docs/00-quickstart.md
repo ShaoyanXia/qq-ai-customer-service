@@ -213,6 +213,14 @@ port: 6199
 url: /ws
 ```
 
+保存后重启 AstrBot，让 `6199` 监听生效：
+
+```bash
+systemctl restart astrbot.service
+sleep 15
+ss -lntp | grep 6199
+```
+
 在 NapCat WebUI 配置反向 WebSocket：
 
 ```text
@@ -222,6 +230,8 @@ ws://127.0.0.1:6199/ws
 连接成功后，AstrBot 控制台会显示 OneBot v11 adapter connected。
 
 更详细的图文式步骤见：[NapCat 连接 AstrBot](06-napcat-onebot.md)。
+
+常见报错和处理方法见：[常见问题和处理方法](09-troubleshooting.md)。
 
 ## NapCat 常见坑
 

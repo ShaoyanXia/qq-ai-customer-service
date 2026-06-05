@@ -13,6 +13,7 @@
 7. [NapCat 连接 AstrBot](06-napcat-onebot.md)
 8. [一键卸载](07-uninstall.md)
 9. [QQ 登录后的收尾一键命令](08-post-login-setup.md)
+10. [常见问题和处理方法](09-troubleshooting.md)
 
 ## 适合谁
 
@@ -34,3 +35,5 @@ curl -fsSL https://gitee.com/xiashaoyan/qq-ai-customer-service/raw/main/install.
 1. 扫码登录 NapCat 的 QQ 小号。
 2. 在 AstrBot WebUI 配置模型、persona 和 OneBot v11。
 3. 修改 `/etc/qqbot/web-chat.env` 里的模型 key 和 Web Chat token。
+
+如果卡在 WebUI、OneBot、端口或服务启动问题，先看：[常见问题和处理方法](09-troubleshooting.md)。

@@ -42,6 +42,7 @@ flowchart LR
 - [NapCat 连接 AstrBot](docs/06-napcat-onebot.md)
 - [一键卸载](docs/07-uninstall.md)
 - [QQ 登录后的收尾一键命令](docs/08-post-login-setup.md)
+- [常见问题和处理方法](docs/09-troubleshooting.md)
 
 ## 一行命令部署
 

@@ -232,6 +232,16 @@ journalctl -u napcat.service --since "10 minutes ago" --no-pager
 
 如果 `ss -lntp | grep 6199` 没输出，说明 AstrBot 的 OneBot v11 机器人没有创建成功或没有启用。
 
+如果 AstrBot WebUI 里已经保存了 OneBot v11，但 `6199` 仍然没监听，重启 AstrBot：
+
+```bash
+systemctl restart astrbot.service
+sleep 15
+ss -lntp | grep 6199
+```
+
+新增或修改消息平台、OneBot、aiocqhttp 机器人配置后，建议重启 AstrBot。看到 `6199` 开始监听后，NapCat 会自动重连。
+
 ### 需要开放 6199 吗？
 
 不需要。`6199` 只给服务器本机的 NapCat 连接 AstrBot，不要放到安全组公网入站。

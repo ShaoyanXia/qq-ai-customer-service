@@ -202,10 +202,30 @@ cat <<'EOF'
 
 仍需人工完成的 WebUI 操作：
   1. 在 AstrBot WebUI 里配置 provider 和 persona。
+     - provider：把 /etc/qqbot/astrbot-provider.generated.json 作为参考。
+     - persona：复制 /opt/chat-qqrobot/configs/astrbot-persona.example.txt。
+     - 详细说明：/opt/chat-qqrobot/docs/00-quickstart.md 的“配置模型 provider”和“写入客服 persona”。
+
   2. 在 AstrBot WebUI 里创建 OneBot v11。
+     - 启用：打开。
+     - 反向 WebSocket 主机：0.0.0.0
+     - 反向 WebSocket 端口：6199
+     - 路径通常为：/ws
+     - 保存后必须重启 AstrBot：
+       systemctl restart astrbot.service
+       sleep 15
+       ss -lntp | grep 6199
+
   3. 在 NapCat WebUI 里新增 WebSocket 客户端。
+     - 注意是“WebSocket 客户端/反向 WebSocket”，不是 WebSocket Server。
+     - URL：ws://127.0.0.1:6199/ws
+     - Token：先和 AstrBot 保持一致；不确定时两边都留空，先跑通。
+     - 详细说明：/opt/chat-qqrobot/docs/06-napcat-onebot.md。
 
 配置完成后，在 QQ 群里测试：
   /chatmem_status
+
+常见问题和处理方法：
+  /opt/chat-qqrobot/docs/09-troubleshooting.md
 EOF
 
