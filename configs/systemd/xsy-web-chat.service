@@ -1,16 +1,17 @@
-[Unit]
-Description=Xigua QQ customer service Web Chat
+﻿[Unit]
+Description=XSY QQ customer service Web Chat
 After=network.target astrbot.service
 
 [Service]
 Type=simple
 User=qqbot
 Group=qqbot
-WorkingDirectory=/opt/xigua-web-chat
+WorkingDirectory=/opt/xsy-web-chat
 EnvironmentFile=/etc/qqbot/web-chat.env
-ExecStart=/opt/xigua-web-chat/venv/bin/python /opt/xigua-web-chat/app.py
+ExecStart=/opt/xsy-web-chat/venv/bin/python /opt/xsy-web-chat/app.py
 Restart=always
 RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
+

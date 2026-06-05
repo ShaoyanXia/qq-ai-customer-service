@@ -1,4 +1,4 @@
-# 原生部署指南
+﻿# 原生部署指南
 
 本指南支持 Ubuntu、Debian、CentOS、RHEL、Alibaba Cloud Linux 等常见服务器系统。原则是：NapCatQQ 使用 Shell/Launcher 原生运行，AstrBot 使用源码和 uv 运行，二者交给 systemd 托管。
 
@@ -28,7 +28,7 @@ sudo apt install -y xvfb
 ```text
 /opt/napcat
 /opt/AstrBot
-/opt/xigua-web-chat
+/opt/xsy-web-chat
 /opt/qqbot-backups
 ```
 
@@ -36,8 +36,8 @@ sudo apt install -y xvfb
 
 ```bash
 sudo useradd -r -m -s /bin/bash qqbot || true
-sudo mkdir -p /opt/napcat /opt/xigua-web-chat /opt/qqbot-backups
-sudo chown -R qqbot:qqbot /opt/napcat /opt/xigua-web-chat /opt/qqbot-backups
+sudo mkdir -p /opt/napcat /opt/xsy-web-chat /opt/qqbot-backups
+sudo chown -R qqbot:qqbot /opt/napcat /opt/xsy-web-chat /opt/qqbot-backups
 ```
 
 ## 3. 安装 NapCatQQ Shell
@@ -144,15 +144,15 @@ sudo systemctl restart astrbot.service
 ## 9. 安装 Web Chat
 
 ```bash
-sudo mkdir -p /opt/xigua-web-chat
-sudo cp -r web-chat/* /opt/xigua-web-chat/
-sudo chown -R qqbot:qqbot /opt/xigua-web-chat
-sudo -u qqbot bash -lc 'cd /opt/xigua-web-chat && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt'
-sudo cp configs/systemd/xigua-web-chat.service /etc/systemd/system/xigua-web-chat.service
+sudo mkdir -p /opt/xsy-web-chat
+sudo cp -r web-chat/* /opt/xsy-web-chat/
+sudo chown -R qqbot:qqbot /opt/xsy-web-chat
+sudo -u qqbot bash -lc 'cd /opt/xsy-web-chat && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt'
+sudo cp configs/systemd/xsy-web-chat.service /etc/systemd/system/xsy-web-chat.service
 sudo install -m 600 configs/web-chat.env.example /etc/qqbot/web-chat.env
 sudo editor /etc/qqbot/web-chat.env
 sudo systemctl daemon-reload
-sudo systemctl enable --now xigua-web-chat.service
+sudo systemctl enable --now xsy-web-chat.service
 ```
 
 健康检查：
@@ -162,3 +162,4 @@ curl -sS http://127.0.0.1:18887/health
 ```
 
 公网访问前必须设置 `ACCESS_TOKEN`，并建议放在 Nginx 后面。
+

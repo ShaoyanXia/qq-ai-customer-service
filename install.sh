@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -euo pipefail
 
 PROJECT_DIR="/opt/chat-qqrobot"
 ASTRBOT_DIR="/opt/AstrBot"
-WEB_DIR="/opt/xigua-web-chat"
+WEB_DIR="/opt/xsy-web-chat"
 REPO_URL="${REPO_URL:-}"
 ASTRBOT_REPO_URL="${ASTRBOT_REPO_URL:-https://gitee.com/forqsg/AstrBot.git}"
 BRANCH="${BRANCH:-main}"
@@ -26,7 +26,7 @@ Options:
   --python <version>    Python version for AstrBot. Default: 3.12.
   --project-dir <path>  Project install path. Default: /opt/chat-qqrobot.
   --astrbot-dir <path>  AstrBot install path. Default: /opt/AstrBot.
-  --web-dir <path>      Web Chat install path. Default: /opt/xigua-web-chat.
+  --web-dir <path>      Web Chat install path. Default: /opt/xsy-web-chat.
   --skip-napcat         Skip NapCat Shell installer.
   -h, --help            Show help.
 
@@ -263,15 +263,18 @@ echo "[8/9] Installing systemd services..."
 tmp_astrbot_service="$(mktemp)"
 tmp_web_service="$(mktemp)"
 cp "$PROJECT_DIR/configs/systemd/astrbot.service" "$tmp_astrbot_service"
-cp "$PROJECT_DIR/configs/systemd/xigua-web-chat.service" "$tmp_web_service"
+cp "$PROJECT_DIR/configs/systemd/xsy-web-chat.service" "$tmp_web_service"
 sed -i "s#/opt/AstrBot#$ASTRBOT_DIR#g" "$tmp_astrbot_service" "$tmp_web_service"
-sed -i "s#/opt/xigua-web-chat#$WEB_DIR#g" "$tmp_web_service"
+sed -i "s#/opt/xsy-web-chat#$WEB_DIR#g" "$tmp_web_service"
 install -m 644 "$tmp_astrbot_service" /etc/systemd/system/astrbot.service
-install -m 644 "$tmp_web_service" /etc/systemd/system/xigua-web-chat.service
+install -m 644 "$tmp_web_service" /etc/systemd/system/xsy-web-chat.service
 rm -f "$tmp_astrbot_service" "$tmp_web_service"
+systemctl stop xigua-web-chat.service >/dev/null 2>&1 || true
+systemctl disable xigua-web-chat.service >/dev/null 2>&1 || true
+rm -f /etc/systemd/system/xigua-web-chat.service
 systemctl daemon-reload
 systemctl enable --now astrbot.service
-systemctl enable --now xigua-web-chat.service
+systemctl enable --now xsy-web-chat.service
 
 if [ "$INSTALL_NAPCAT" -eq 1 ]; then
   echo "[9/9] Launching NapCat Shell installer in non-container mode..."
@@ -297,23 +300,20 @@ cat <<EOF
 
 安装完成。
 
-下一步：
-1. 编辑 /etc/qqbot/web-chat.env，填写 OPENAI_BASE_URL、OPENAI_API_KEY、OPENAI_MODEL、ACCESS_TOKEN。
-2. 生成 AstrBot provider 参考配置：
-   bash $PROJECT_DIR/scripts/generate-astrbot-provider-from-env.sh
-3. 在 AstrBot WebUI 里配置模型 provider 和客服 persona。通用 persona 可复制：$PROJECT_DIR/configs/astrbot-persona.example.txt
-4. 打开 NapCat WebUI，扫码登录 QQ，并配置 OneBot v11 反向 WebSocket，地址为 ws://127.0.0.1:6199/ws。
-5. 修改配置后重启对应服务：
-   systemctl restart astrbot.service
-   systemctl restart xigua-web-chat.service
-6. 通过 SSH 隧道打开 AstrBot：
-   ssh -L 6185:127.0.0.1:6185 root@<SERVER_IP>
-   http://127.0.0.1:6185
-7. 通过 SSH 隧道打开 NapCat WebUI：
-   ssh -L 6099:127.0.0.1:6099 root@<SERVER_IP>
-   journalctl -u napcat.service --since "5 minutes ago" --no-pager | grep -E "WebUi|6099|token"
-8. 测试 Web Chat 健康状态：
-   curl -sS http://127.0.0.1:18887/health
+接下来只做三件事：
+
+1. 填写模型配置：
+   nano /etc/qqbot/web-chat.env
+
+2. 打开 NapCat WebUI，扫码登录 QQ。
+   查看 WebUI 地址和 token：
+   journalctl -u napcat.service --since "10 minutes ago" --no-pager | grep -E "WebUi|6099|token"
+
+3. QQ 登录完成后，执行收尾脚本：
+   bash $PROJECT_DIR/scripts/post-login-setup.sh
+
+收尾脚本会检查服务、生成 AstrBot provider 参考配置、打印 WebUI 访问方式、检查端口和 Web Chat 健康状态。
 
 重要提醒：不要把 NapCat WebUI、AstrBot Dashboard、OneBot 端口直接暴露到公网。
 EOF
+

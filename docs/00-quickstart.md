@@ -1,4 +1,4 @@
-# 中文快速开始
+﻿# 中文快速开始
 
 这份文档给“只想尽快在服务器跑起来”的用户看。目标是部署一个 QQ 群智能客服机器人：能在群里回复问题，能记录群聊，能沉淀 FAQ，还能用网页单独测试。
 
@@ -119,7 +119,7 @@ OPENAI_MODEL=你的模型名
 然后重启：
 
 ```bash
-sudo systemctl restart xigua-web-chat.service
+sudo systemctl restart xsy-web-chat.service
 ```
 
 测试：
@@ -311,3 +311,4 @@ sudo systemctl restart astrbot.service
 - QQ 群里发的是图片，不是被平台拦截。
 - AstrBot provider 配置里有 `modalities: ["image"]`。
 - 你的模型服务真的支持 OpenAI 兼容图片输入。
+

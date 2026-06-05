@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -euo pipefail
 
 PROJECT_DIR="${PROJECT_DIR:-/opt/chat-qqrobot}"
 ASTRBOT_DIR="${ASTRBOT_DIR:-/opt/AstrBot}"
-WEB_DIR="${WEB_DIR:-/opt/xigua-web-chat}"
+WEB_DIR="${WEB_DIR:-/opt/xsy-web-chat}"
 NAPCAT_DIR="${NAPCAT_DIR:-/root/Napcat}"
 NAPCAT_INSTALL_DIR="${NAPCAT_INSTALL_DIR:-/opt/napcat}"
 BACKUP_DIR="${BACKUP_DIR:-/opt/qqbot-backups}"
@@ -115,7 +115,8 @@ cat <<EOF
 服务：
   - napcat.service
   - astrbot.service
-  - xigua-web-chat.service
+  - xsy-web-chat.service
+  - xigua-web-chat.service（旧服务名，如存在）
 
 目录：
   - $PROJECT_DIR
@@ -161,10 +162,12 @@ fi
 
 stop_disable_service napcat.service
 stop_disable_service astrbot.service
+stop_disable_service xsy-web-chat.service
 stop_disable_service xigua-web-chat.service
 
 remove_path /etc/systemd/system/napcat.service
 remove_path /etc/systemd/system/astrbot.service
+remove_path /etc/systemd/system/xsy-web-chat.service
 remove_path /etc/systemd/system/xigua-web-chat.service
 run systemctl daemon-reload
 
@@ -191,3 +194,4 @@ if id qqbot >/dev/null 2>&1; then
 fi
 
 echo "卸载完成。"
+

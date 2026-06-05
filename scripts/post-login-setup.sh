@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -euo pipefail
 
 PROJECT_DIR="${PROJECT_DIR:-/opt/chat-qqrobot}"
 ASTRBOT_DIR="${ASTRBOT_DIR:-/opt/AstrBot}"
-WEB_DIR="${WEB_DIR:-/opt/xigua-web-chat}"
+WEB_DIR="${WEB_DIR:-/opt/xsy-web-chat}"
 SERVER_IP="${SERVER_IP:-}"
 FIX_VENV=1
 
@@ -16,7 +16,7 @@ usage() {
   NapCat 已经启动，QQ 小号已经扫码登录后，自动完成/检查后续收尾步骤。
 
 会做什么：
-  - 确认 napcat.service、astrbot.service、xigua-web-chat.service 状态。
+  - 确认 napcat.service、astrbot.service、xsy-web-chat.service 状态。
   - 修复 AstrBot/Web Chat venv 指向 root 私有 Python 导致的 Permission denied。
   - 根据 /etc/qqbot/web-chat.env 生成 AstrBot provider 参考配置。
   - 打印 NapCat WebUI token、SSH 隧道命令、OneBot 反向 WebSocket 地址。
@@ -102,21 +102,21 @@ info "1. 检查服务"
 systemctl daemon-reload
 systemctl enable --now napcat.service >/dev/null 2>&1 || true
 systemctl enable --now astrbot.service >/dev/null 2>&1 || true
-systemctl enable --now xigua-web-chat.service >/dev/null 2>&1 || true
+systemctl enable --now xsy-web-chat.service >/dev/null 2>&1 || true
 
 echo "等待服务启动 15 秒..."
 sleep 15
 
 echo "$(service_status_line napcat.service)"
 echo "$(service_status_line astrbot.service)"
-echo "$(service_status_line xigua-web-chat.service)"
+echo "$(service_status_line xsy-web-chat.service)"
 
 info "2. 修复可能的 venv 权限问题"
 if [ -d "$ASTRBOT_DIR" ] && [ -f "$ASTRBOT_DIR/requirements.txt" ]; then
   fix_venv_if_needed astrbot.service "$ASTRBOT_DIR" "$ASTRBOT_DIR/requirements.txt"
 fi
 if [ -d "$WEB_DIR" ] && [ -f "$WEB_DIR/requirements.txt" ]; then
-  fix_venv_if_needed xigua-web-chat.service "$WEB_DIR" "$WEB_DIR/requirements.txt"
+  fix_venv_if_needed xsy-web-chat.service "$WEB_DIR" "$WEB_DIR/requirements.txt"
 fi
 
 echo "等待服务重启 15 秒..."
@@ -193,7 +193,7 @@ if curl -sS --max-time 3 http://127.0.0.1:18887/health; then
   echo
 else
   echo "Web Chat 未通过健康检查。查看日志："
-  echo "  journalctl -u xigua-web-chat.service --since \"10 minutes ago\" --no-pager"
+  echo "  journalctl -u xsy-web-chat.service --since \"10 minutes ago\" --no-pager"
 fi
 
 cat <<'EOF'
@@ -208,3 +208,4 @@ cat <<'EOF'
 配置完成后，在 QQ 群里测试：
   /chatmem_status
 EOF
+

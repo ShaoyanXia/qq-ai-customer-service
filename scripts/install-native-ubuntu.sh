@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -euo pipefail
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -10,8 +10,8 @@ apt update
 apt install -y git curl ca-certificates python3 python3-venv python3-pip sqlite3 unzip xvfb
 
 useradd -r -m -s /bin/bash qqbot || true
-mkdir -p /opt/napcat /opt/xigua-web-chat /opt/qqbot-backups
-chown -R qqbot:qqbot /opt/napcat /opt/xigua-web-chat /opt/qqbot-backups
+mkdir -p /opt/napcat /opt/xsy-web-chat /opt/qqbot-backups
+chown -R qqbot:qqbot /opt/napcat /opt/xsy-web-chat /opt/qqbot-backups
 
 if [ ! -d /opt/AstrBot/.git ]; then
   git clone https://github.com/AstrBotDevs/AstrBot.git /opt/AstrBot
@@ -26,4 +26,5 @@ echo "Next:"
 echo "1. Install NapCat Shell manually with official installer in /opt/napcat."
 echo "2. Copy configs/systemd/astrbot.service to /etc/systemd/system/."
 echo "3. Install the memory plugin into /opt/AstrBot/data/plugins/."
+
 

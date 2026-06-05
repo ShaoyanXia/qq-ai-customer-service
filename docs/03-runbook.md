@@ -1,11 +1,11 @@
-# 运维和排障手册
+﻿# 运维和排障手册
 
 ## 服务状态
 
 ```bash
 systemctl status napcat.service --no-pager -l
 systemctl status astrbot.service --no-pager -l
-systemctl status xigua-web-chat.service --no-pager -l
+systemctl status xsy-web-chat.service --no-pager -l
 ```
 
 如果 NapCat 还没有 systemd 服务，运行：
@@ -19,12 +19,12 @@ sudo bash /opt/chat-qqrobot/scripts/setup-napcat-service.sh
 ```bash
 journalctl -u napcat.service --since "30 minutes ago" --no-pager
 journalctl -u astrbot.service --since "30 minutes ago" --no-pager
-journalctl -u xigua-web-chat.service --since "30 minutes ago" --no-pager
+journalctl -u xsy-web-chat.service --since "30 minutes ago" --no-pager
 ```
 
 原则：
 
-- 改 Web Chat，只重启 `xigua-web-chat.service`。
+- 改 Web Chat，只重启 `xsy-web-chat.service`。
 - 改 AstrBot 插件、persona、provider，只重启 `astrbot.service`。
 - 不到必须，不重启 NapCat，避免 QQ 小号重新扫码。
 
@@ -142,27 +142,27 @@ curl -sS http://127.0.0.1:18887/health
 如果提示无法连接，先看服务状态和日志：
 
 ```bash
-systemctl status xigua-web-chat.service --no-pager -l
-journalctl -u xigua-web-chat.service --since "10 minutes ago" --no-pager
+systemctl status xsy-web-chat.service --no-pager -l
+journalctl -u xsy-web-chat.service --since "10 minutes ago" --no-pager
 ```
 
 如果日志里有：
 
 ```text
-Failed to execute /opt/xigua-web-chat/venv/bin/python: Permission denied
+Failed to execute /opt/xsy-web-chat/venv/bin/python: Permission denied
 ```
 
 说明虚拟环境里的 Python 指向了 root 目录下的 uv Python，`qqbot` 服务用户没有执行权限。直接重建 Web Chat venv：
 
 ```bash
-systemctl stop xigua-web-chat.service
-rm -rf /opt/xigua-web-chat/venv
-cd /opt/xigua-web-chat
+systemctl stop xsy-web-chat.service
+rm -rf /opt/xsy-web-chat/venv
+cd /opt/xsy-web-chat
 python3 -m venv venv
-/opt/xigua-web-chat/venv/bin/pip install -U pip
-/opt/xigua-web-chat/venv/bin/pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
-chown -R qqbot:qqbot /opt/xigua-web-chat/venv
-systemctl restart xigua-web-chat.service
+/opt/xsy-web-chat/venv/bin/pip install -U pip
+/opt/xsy-web-chat/venv/bin/pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
+chown -R qqbot:qqbot /opt/xsy-web-chat/venv
+systemctl restart xsy-web-chat.service
 curl -sS http://127.0.0.1:18887/health
 ```
 
@@ -258,7 +258,7 @@ NapCat 能拉到的历史取决于 QQ 当前可见缓存和服务端允许回溯
 /opt/AstrBot/data/cmd_config.json
 /opt/AstrBot/data/plugins/astrbot_plugin_group_memory
 /opt/AstrBot/data/plugin_data/astrbot_plugin_group_memory/chat_memory.sqlite3
-/opt/xigua-web-chat
+/opt/xsy-web-chat
 ```
 
 SQLite 在线备份：
@@ -266,3 +266,4 @@ SQLite 在线备份：
 ```bash
 sqlite3 /opt/AstrBot/data/plugin_data/astrbot_plugin_group_memory/chat_memory.sqlite3 ".backup '/opt/qqbot-backups/chat_memory_backup.sqlite3'"
 ```
+

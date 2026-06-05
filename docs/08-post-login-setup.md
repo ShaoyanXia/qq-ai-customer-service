@@ -1,4 +1,4 @@
-# QQ 登录后的收尾一键命令
+﻿# QQ 登录后的收尾一键命令
 
 当 NapCat 已经启动，并且 QQ 小号已经扫码登录后，可以执行收尾脚本。
 
@@ -18,7 +18,7 @@ curl -fsSL https://gitee.com/xiashaoyan/qq-ai-customer-service/raw/main/scripts/
 
 ## 它会自动做什么
 
-- 检查并启动 `napcat.service`、`astrbot.service`、`xigua-web-chat.service`。
+- 检查并启动 `napcat.service`、`astrbot.service`、`xsy-web-chat.service`。
 - 修复 AstrBot/Web Chat venv 指向 root 私有 Python 导致的 `Permission denied`。
 - 根据 `/etc/qqbot/web-chat.env` 生成 AstrBot provider 参考配置：
 
@@ -57,4 +57,5 @@ ws://127.0.0.1:6199/ws
 ```
 
 如果机器人回复消息数、FAQ 数等信息，说明 AstrBot、NapCat 和记忆插件已经连通。
+
 

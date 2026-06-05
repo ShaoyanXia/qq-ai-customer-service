@@ -1,4 +1,4 @@
-# 一键卸载
+﻿# 一键卸载
 
 如果安装中断、配置错了，或者不想继续使用，可以运行卸载脚本。
 
@@ -14,10 +14,10 @@ curl -fsSL https://gitee.com/xiashaoyan/qq-ai-customer-service/raw/main/uninstal
 
 - `napcat.service`
 - `astrbot.service`
-- `xigua-web-chat.service`
+- `xsy-web-chat.service`
 - `/opt/chat-qqrobot`
 - `/opt/AstrBot`
-- `/opt/xigua-web-chat`
+- `/opt/xsy-web-chat`
 - `/root/Napcat`
 - `/opt/napcat`
 - `/etc/qqbot`
@@ -91,4 +91,5 @@ curl -fsSL https://gitee.com/xiashaoyan/qq-ai-customer-service/raw/main/uninstal
 ```bash
 sudo bash /opt/chat-qqrobot/uninstall.sh --yes
 ```
+
 

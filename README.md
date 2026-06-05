@@ -1,4 +1,4 @@
-# QQ 群智能客服快速部署方案
+﻿# QQ 群智能客服快速部署方案
 
 这是一个面向服务器部署的 QQ 群智能客服开源方案。它基于 NapCatQQ + AstrBot + OpenAI 兼容模型 API，提供群聊机器人、群聊记忆、长期 FAQ 沉淀、网页测试入口和日常运维手册。
 
@@ -64,7 +64,7 @@ curl -fsSL https://raw.githubusercontent.com/ShaoyanXia/qq-ai-customer-service/m
 - 拉取本项目到 `/opt/chat-qqrobot`。
 - 源码安装 AstrBot 到 `/opt/AstrBot`，国内默认使用 Gitee 镜像，GitHub 作为备用。
 - 安装群聊记忆插件。
-- 安装 Web Chat 到 `/opt/xigua-web-chat`。
+- 安装 Web Chat 到 `/opt/xsy-web-chat`。
 - 写入 `/etc/qqbot/*.env`。
 - 安装并启动 systemd 服务。
 - 启动 NapCat Shell 原生安装流程。
@@ -146,3 +146,4 @@ curl -fsSL https://gitee.com/xiashaoyan/qq-ai-customer-service/raw/main/uninstal
 - AstrBot 官方文档：https://docs.astrbot.app/
 - AstrBot 源码部署：https://docs.astrbot.app/en/deploy/astrbot/cli.html
 - AstrBot OneBot v11 接入：https://docs.astrbot.app/en/platform/aiocqhttp.html
+
