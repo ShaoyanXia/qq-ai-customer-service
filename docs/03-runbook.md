@@ -184,6 +184,19 @@ python3 scripts/test_openai_compatible.py text \
   --model <MODEL>
 ```
 
+## 从 Web Chat 配置生成 AstrBot Provider
+
+Web Chat 和 AstrBot 是两个独立服务。`/etc/qqbot/web-chat.env` 不会自动被 AstrBot 读取。
+
+如果已经在 `web-chat.env` 里填写了模型配置，可以生成 AstrBot provider 参考 JSON：
+
+```bash
+bash /opt/chat-qqrobot/scripts/generate-astrbot-provider-from-env.sh
+cat /etc/qqbot/astrbot-provider.generated.json
+```
+
+然后把生成内容复制到 AstrBot WebUI 的 provider 配置里，或按表单逐项填写。
+
 图片：
 
 ```bash

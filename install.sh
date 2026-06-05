@@ -291,18 +291,20 @@ cat <<EOF
 
 下一步：
 1. 编辑 /etc/qqbot/web-chat.env，填写 OPENAI_BASE_URL、OPENAI_API_KEY、OPENAI_MODEL、ACCESS_TOKEN。
-2. 在 AstrBot WebUI 里配置模型 provider 和客服 persona。通用 persona 可复制：$PROJECT_DIR/configs/astrbot-persona.example.txt
-3. 打开 NapCat WebUI，扫码登录 QQ，并配置 OneBot v11 反向 WebSocket，地址为 ws://127.0.0.1:6199/ws。
-4. 修改配置后重启对应服务：
+2. 生成 AstrBot provider 参考配置：
+   bash $PROJECT_DIR/scripts/generate-astrbot-provider-from-env.sh
+3. 在 AstrBot WebUI 里配置模型 provider 和客服 persona。通用 persona 可复制：$PROJECT_DIR/configs/astrbot-persona.example.txt
+4. 打开 NapCat WebUI，扫码登录 QQ，并配置 OneBot v11 反向 WebSocket，地址为 ws://127.0.0.1:6199/ws。
+5. 修改配置后重启对应服务：
    systemctl restart astrbot.service
    systemctl restart xigua-web-chat.service
-5. 通过 SSH 隧道打开 AstrBot：
+6. 通过 SSH 隧道打开 AstrBot：
    ssh -L 6185:127.0.0.1:6185 root@<SERVER_IP>
    http://127.0.0.1:6185
-6. 通过 SSH 隧道打开 NapCat WebUI：
+7. 通过 SSH 隧道打开 NapCat WebUI：
    ssh -L 6099:127.0.0.1:6099 root@<SERVER_IP>
    journalctl -u napcat.service --since "5 minutes ago" --no-pager | grep -E "WebUi|6099|token"
-7. 测试 Web Chat 健康状态：
+8. 测试 Web Chat 健康状态：
    curl -sS http://127.0.0.1:18887/health
 
 重要提醒：不要把 NapCat WebUI、AstrBot Dashboard、OneBot 端口直接暴露到公网。

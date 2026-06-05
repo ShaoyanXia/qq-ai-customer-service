@@ -160,7 +160,21 @@ sudo journalctl -u astrbot.service --since "10 minutes ago" --no-pager
 
 ### 4. 配置模型 provider
 
-在 AstrBot WebUI 里配置 OpenAI 兼容模型。参考：
+`/etc/qqbot/web-chat.env` 只会被 Web Chat 读取，AstrBot 不会自动读取这个文件。两者是独立服务：
+
+- Web Chat 用 `/etc/qqbot/web-chat.env` 调模型。
+- AstrBot 用自己的 provider 配置调模型。
+
+为了不用手写第二遍，可以根据 `web-chat.env` 生成 AstrBot provider 参考配置：
+
+```bash
+bash /opt/chat-qqrobot/scripts/generate-astrbot-provider-from-env.sh
+cat /etc/qqbot/astrbot-provider.generated.json
+```
+
+然后把生成的 JSON 内容复制到 AstrBot WebUI 的 provider 配置里，或按表单逐项填写。
+
+也可以参考：
 
 ```text
 configs/astrbot-provider.example.json
