@@ -104,6 +104,9 @@ systemctl enable --now napcat.service >/dev/null 2>&1 || true
 systemctl enable --now astrbot.service >/dev/null 2>&1 || true
 systemctl enable --now xigua-web-chat.service >/dev/null 2>&1 || true
 
+echo "等待服务启动 15 秒..."
+sleep 15
+
 echo "$(service_status_line napcat.service)"
 echo "$(service_status_line astrbot.service)"
 echo "$(service_status_line xigua-web-chat.service)"
@@ -115,6 +118,9 @@ fi
 if [ -d "$WEB_DIR" ] && [ -f "$WEB_DIR/requirements.txt" ]; then
   fix_venv_if_needed xigua-web-chat.service "$WEB_DIR" "$WEB_DIR/requirements.txt"
 fi
+
+echo "等待服务重启 15 秒..."
+sleep 15
 
 info "3. 生成 AstrBot provider 参考配置"
 if [ -x "$PROJECT_DIR/scripts/generate-astrbot-provider-from-env.sh" ] || [ -f "$PROJECT_DIR/scripts/generate-astrbot-provider-from-env.sh" ]; then
@@ -202,4 +208,3 @@ cat <<'EOF'
 配置完成后，在 QQ 群里测试：
   /chatmem_status
 EOF
-
