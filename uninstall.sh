@@ -77,6 +77,8 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
+cd /
+
 run() {
   if [ "$DRY_RUN" -eq 1 ]; then
     printf '[dry-run] %q ' "$@"

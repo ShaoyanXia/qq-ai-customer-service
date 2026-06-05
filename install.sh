@@ -86,6 +86,8 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
+cd /
+
 if [ -z "$REPO_URL" ]; then
   echo "Missing --repo. Publish this project to GitHub/Gitee first, then pass its git URL." >&2
   usage
