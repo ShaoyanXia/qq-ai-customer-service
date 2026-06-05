@@ -8,6 +8,7 @@ REPO_URL="${REPO_URL:-}"
 ASTRBOT_REPO_URL="${ASTRBOT_REPO_URL:-https://gitee.com/forqsg/AstrBot.git}"
 BRANCH="${BRANCH:-main}"
 INSTALL_NAPCAT=1
+NAPCAT_STATUS="skipped"
 UV_BIN=""
 PYTHON_VERSION="${PYTHON_VERSION:-3.12}"
 UV_PYTHON_INSTALL_DIR="${UV_PYTHON_INSTALL_DIR:-/opt/qqbot-python}"
@@ -280,10 +281,12 @@ if [ "$INSTALL_NAPCAT" -eq 1 ]; then
   echo "[9/9] Launching NapCat Shell installer in non-container mode..."
   echo "This step may be interactive. Choose Shell/native install when prompted."
   cd /opt/napcat
-  curl -fsSL -o napcat.sh https://nclatest.znin.net/NapNeko/NapCat-Installer/main/script/install.sh
-  bash napcat.sh --docker n --cli y || {
-    echo "NapCat installer exited with a non-zero status. Continue with manual setup from docs/01-native-deploy.md." >&2
-  }
+  if curl -fsSL -o napcat.sh https://nclatest.znin.net/NapNeko/NapCat-Installer/main/script/install.sh && bash napcat.sh --docker n --cli y; then
+    NAPCAT_STATUS="ok"
+  else
+    NAPCAT_STATUS="failed"
+    echo "NapCat 安装失败。请先修复 NapCat，再继续后续配置。" >&2
+  fi
   if [ -x /root/Napcat/opt/QQ/qq ]; then
     echo "检测到 /root/Napcat/opt/QQ/qq，正在安装 napcat.service..."
     bash "$PROJECT_DIR/scripts/setup-napcat-service.sh" || {
@@ -294,6 +297,38 @@ if [ "$INSTALL_NAPCAT" -eq 1 ]; then
   fi
 else
   echo "[9/9] Skipped NapCat installer."
+fi
+
+if [ "$NAPCAT_STATUS" = "failed" ]; then
+  cat <<EOF
+
+安装部分完成，但 NapCat 安装失败。
+
+已完成：
+  - 系统依赖
+  - 项目目录：$PROJECT_DIR
+  - AstrBot：$ASTRBOT_DIR
+  - Web Chat：$WEB_DIR
+  - systemd 服务模板
+
+未完成：
+  - NapCat 原生安装
+  - QQ 扫码登录
+  - NapCat WebUI / OneBot 配置
+
+下一步：
+1. 先手动安装或修复 NapCat。可参考：
+   $PROJECT_DIR/docs/01-native-deploy.md
+
+2. 如果 NapCat 已经安装到了 /root/Napcat/opt/QQ/qq，运行：
+   bash $PROJECT_DIR/scripts/setup-napcat-service.sh
+
+3. NapCat 启动并完成 QQ 扫码登录后，再运行：
+   bash $PROJECT_DIR/scripts/post-login-setup.sh
+
+重要提醒：当前不能算完整安装成功，因为 NapCat 是 QQ 登录和收发消息的核心组件。
+EOF
+  exit 2
 fi
 
 cat <<EOF
